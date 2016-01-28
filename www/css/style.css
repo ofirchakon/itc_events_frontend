@@ -1,1 +1,17 @@
 /* Empty. Add your own CSS if you like */
+.blue_border{
+	border-bottom-color: #4A90E2;
+	border-bottom-width: 2px;
+}
+.blue{
+	color: #4A90E2;
+}
+.hidden{
+	visibility: hidden;
+}
+.none_displayed{
+	display: none;
+}
+.selected{
+	background-color: #E5E5E5;
+}
