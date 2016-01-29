@@ -1,33 +1,45 @@
-<ion-modal-view> 
+<link href="css/wall.css" rel="stylesheet">
 
-	<link href="css/style.css" rel="stylesheet">
-	<ion-view view-title="Events">
-	  <ion-content>
-	    <ion-list>
-	      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+<ion-view view-title="Events">
 
-		      <div class="list card">
-		      	<div class="event-list-item silver">
+  <ion-content>
+    <div class="container-centered">
+    <ion-list>
+      <div class="button-bar vspace">
+	        <a class="button button-large button-balanced btn-create" href="#/app/search">
+		      Create Event
+		    </a>
+	  	  </div>
+      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
 
-				  <div class="item item-avatar silver">
-				    <img src="img/avatar.jpg">
-				    <span class="playlist-title" style="word-wrap: break-word;">{{playlist.title}}</span>
-				    <span class="playlist-location">{{playlist.location}}</span>
-				    <span class="playlist-creator">-{{playlist.creator}}</span>
-				  </div>
+		  
 
-				  <div class="item item-image event-list-cover">
-				    <img class="event-list-cover" src="img/{{playlist.picture_url}}">
-				  </div>
+	      <div class="list card">
 
-				  <button class="button button-block button-positive meetc-blue" style="background-color: #4A90E2">
-	  				Join
-				  </button>
+	      	<div class="event-list-item silver">
 
-				</div>
+			  <div class="item item-avatar silver">
+			    <img src="img/avatar.jpg">
+			    <span class="playlist-title" style="word-wrap: break-word;">{{playlist.title}}</span>
+			    <span class="playlist-location">{{playlist.location}}</span>
+			    <span class="playlist-creator">--{{playlist.creator}}</span>
 			  </div>
 
-	      </ion-item>
-	    </ion-list>
-	  </ion-content>
+			  <div class="item item-image event-list-cover">
+			    <img class="event-list-cover" src="img/{{playlist.picture_url}}">
+			  </div>
+
+			  <button class="button button-block button-calm">
+  				Join
+			  </button>
+
+			</div>
+		  </div>
+
+      </ion-item>
+
+    </ion-list>
+	</div>
+  </ion-content>
+
 </ion-view>
