@@ -51,6 +51,51 @@ angular.module('starter.controllers', [])
     { title: 'Whiskey shots at Cofixxx and more', location: 'Tel Aviv', creator: 'Ary', picture_url: 'cover.jpg', id: 6 }
   ];
 })
+.controller('CreateCtrl', function($scope, User){
+    $scope.event_ = {
+      invited : [],
+      date : new Date()
+    };
 
+    var users = User.getAll();
+    $scope.liste = '';
+
+    $scope.show_users = function(){
+      if($scope.event_.search_user.length > 0){
+        $scope.users = users;
+      }
+      else{
+        $scope.users = [];
+      }
+    }
+    $scope.add_user = function(id, name){
+      if($scope.event_.invited.indexOf(id) == -1){
+        $scope.event_.invited.push(id);
+        $scope.liste += name[0]+','
+      }
+      else{
+        index = $scope.event_.invited.indexOf(id);
+        $scope.event_.invited.splice(index, 1);
+        $scope.liste = $scope.liste.substring(0, index*2 - 1) + $scope.liste.substring(Math.min(index*2 + 2,$scope.liste.length), $scope.liste.length);
+      }
+    }
+
+    $scope.status_invit = 0;
+    $scope.invite_all = function(){
+      if($scope.status_invit == 0){
+        $scope.status_invit = 1;
+        $scope.event_.invited = _.pluck(users, 'id');
+      }
+      else{
+        $scope.status_invit = 0;
+        $scope.event_.invited = [];
+        $scope.liste = "";
+      }
+      $scope.users = [];
+      $scope.event_.search_user = "";
+      $scope.liste = '';
+    }
+
+})
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });

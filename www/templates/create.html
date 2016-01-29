@@ -1,1 +1,33 @@
-
+<ion-view view-title="Create">
+  <ion-content>
+  <div class="list">
+  	<label class="item item-input item-floating-label" ng-class="{blue_border: event_.title.length > 0}">
+  	<span class="input-label blue">Title</span>
+  		<input type="text" ng-model="event_.title" placeholder="Title">
+  	</label>
+  	<label class="item item-input item-floating-label" ng-class="{blue_border: event_.place}">
+  		<span class="blue" ng-class="{hidden: !event_.place}">Where?</span>
+<!--   		<input type="text" placeholder="Where?" ng-model="event.place"> -->
+  		<ion-google-place placeholder="Where?" ng-model="event_.place"/>
+  	</label>
+  	<label class="item item-input item-floating-label" ng-class="{blue_border: event_.date}">
+  		<span class="input-label blue">When?</span>
+  		<input type="date" ng-model="event_.date" placeholder="When?">
+  	</label>
+  	<label class="item item-input item-floating-label" ng-class="{blue_border: event_.time}">
+  		<span class="input-label blue">What time?</span>
+  		<input type="time" ng-model="event_.time" placeholder="What time?">
+  	</label>
+  	<label class="item item-input item-floating-label">
+  		<span class="input-label blue">Friends</span>
+  		<input type="text" ng-disabled="status_invit == 1" placeholder="Invite your friends" ng-model="event_.search_user" ng-keyup="show_users()" ng-class="{blue_border: event_.friends.length > 0}">{{liste}}
+  	</label>
+  	<ul class="list">
+    	<li class="item" ng-click="add_user(user.id, user.name)" ng-repeat='user in users | filter: event_.search_user' ng-class= '{selected: event_.invited.indexOf(user.id) > -1}'>
+    		{{user.name}}
+    	</li>
+	</ul>
+	 <ion-checkbox ng-click="invite_all()">Invite everybody</ion-checkbox>
+  </div>
+  </ion-content>
+</ion-view>

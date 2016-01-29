@@ -1,5 +1,21 @@
 /* Empty. Add your own CSS if you like */
-@import url(https://fonts.googleapis.com/css?family=Handlee);
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+.blue_border{
+	border-bottom-color: #4A90E2;
+	border-bottom-width: 2px;
+}
+.blue{
+	color: #4A90E2;
+}
+.hidden{
+	visibility: hidden;
+}
+.none_displayed{
+	display: none;
+}
+.selected{
+	background-color: #E5E5E5;
+}
 .homepage_button{
 	width: 90%;
 	height: 60px;
@@ -13,8 +29,7 @@
 }
 .homepage_fb{
 	background-color: #4A90E2;
-	font-family: Klavika Bold ;
-	font-size: 22px;
+	font-size: 18px;
 	width: 85%;
 }
 .logo_home img{
@@ -25,9 +40,9 @@
 .mess_home{
 	font-size: 25px;
 	text-align: center;
-	margin-top: 70px;
-	font-weight: bold;
+	margin-top: 120px;
 	color: #363B40;
+	font-family: 'Pacifico', cursive;
 }
 .list_card{
 	font-size: 25px;
@@ -39,11 +54,6 @@
 
 .button-female{
 	background-color: #FBAED2 !important;
-
-}
-
-p{
-	font-family: 'Handlee', cursive;
 
 }
 
