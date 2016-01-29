@@ -4,14 +4,26 @@ angular.module('starter.factories', [])
 	var obj = {};
 
 	obj.getAll = function(){
-		return [{
-			name: 'Raphael Fettaya',
-			id: 1
-		}, 
-		{
-			name: 'Harry Potter',
-			id: 2
-		}, ]
+		return $http({
+			method: 'GET',
+			url: 'http://meetc.herokuapp.com:80/get_users',
+		});
+	}
+
+	obj.getById = function (user_id) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/user/get',
+			data: { 'user_id': user_id }
+		});
+	}
+
+	obj.getByEvent = function (event_id) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/event_users',
+			data: { 'event_id': event_id }
+		});
 	}
 
 	obj.create = function(user_data){
@@ -24,9 +36,51 @@ angular.module('starter.factories', [])
 					'picture_url': user_data.picture_url
 		};
 
-		return $http.post('http://ofirchakon.com/meetc/public/create_user.php', user);
+		return $http.post('http://meetc.herokuapp.com:80/create_user', user);
 	}
 	return obj;
+}])
+
+.factory('Event', ['$http', function ($http) {
+
+	var obj = {};
+
+	obj.create = function(event_data) {
+		var _event = {
+			'event_id': event_data.id,
+			'user_id': event_data.user_id,
+			'title': event_data.title,
+			'at_time': event_data.at_time,
+			'lat': event_data.lat,
+			'lng': event_data.lng,
+			'picture_url': event_data.picture_url,
+			'participants': event_data.participants
+		};
+
+		return $http.post('http://meetc.herokuapp.com:80/create_event', _event);
+	};
+
+	obj.getAll = function () {
+		return $http({
+			method: 'GET',
+			url: 'http://meetc.herokuapp.com:80/get_events'
+		});
+	};
+
+	obj.update = function (update_obj) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/update_event',
+			data: {
+				'event_id': update_obj.event_id,
+				'user_id': update_obj.user_id,
+				'new_status': update_obj.new_status
+			}
+		});
+	}
+
+	return obj;
+
 }])
 
 .factory('FB', ['$http', '$q', function($http, $q){
