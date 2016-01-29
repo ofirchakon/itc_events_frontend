@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, User) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
   $scope.login = function() {
     $scope.modal.show();
   };
-
+  $scope.user = User.getMe();
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -170,11 +170,12 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('LoginCtrl', function($scope, FB, User) {
+.controller('LoginCtrl', function($scope, FB, User, $localStorage, $location) {
   $scope.facebookConnect = function(){
     FB.login(function(user){
       User.create(user).success(function(data){
-        console.log(data);
+        $localStorage.setObject('user', data);
+        $location.path('app/playlists');
       });
     });
   }
