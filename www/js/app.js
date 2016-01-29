@@ -55,7 +55,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
   })
 
   .state('app.browse', {
-      url: '/browse',
+      url: '/event/:eventId',
       views: {
         'menuContent': {
           templateUrl: 'templates/event.html',
