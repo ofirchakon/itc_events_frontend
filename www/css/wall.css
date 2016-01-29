@@ -3,6 +3,11 @@
 	// background-color: #4A90E2;
 }
 
+.wrapping-list .item-content, .wrapping-list .item {
+    overflow: initial !important;
+    white-space: initial !important;
+}
+
 .vspace {
 	margin-top: 10px;
 }
