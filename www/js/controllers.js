@@ -60,7 +60,7 @@ angular.module('starter.controllers', [])
 .controller('ParticipantsCtrl', function($scope, User, Event, $stateParams){
 
     User.getByEvent($stateParams.eventId).then(function (data) {
-      $scope.users = data;
+      $scope.users = data.data;
       $scope.females = 0;
       $scope.males = 0;
 
@@ -85,7 +85,6 @@ angular.module('starter.controllers', [])
 
       $scope.status = 'Join';
       // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
-    });
 
     $scope.attend = function () {
       Event.update(id).then(function (data) {
@@ -110,9 +109,14 @@ angular.module('starter.controllers', [])
     $scope.number = $scope.users.length;
     $scope.ratiof = $scope.females / $scope.number * 100;
     $scope.ratiom = $scope.males / $scope.number * 100;
-    $scope.place = 'Restaurant Bellagio'
+    Event.get($stateParams.eventId).success(function(data){
+      console.log(data);
+    })
+    $scope.place = 'Title'
     $scope.district = 'Florentin'
     $scope.date = 'February 16, 2016'
+
+  });
 })
 
 .controller('CreateCtrl', function($scope, User, $http, Event, $location){
