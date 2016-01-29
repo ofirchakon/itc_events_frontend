@@ -43,13 +43,19 @@ angular.module('starter.controllers', [])
 
 .controller('PlaylistsCtrl', function($scope, $http, User, Event) {
   $scope.playlists = [
-    { title: 'Drink some beer', location: 'Tel Aviv', creator: 'Ofir', picture_url: 'cover.jpg', id: 1 },
-    { title: 'Go bar-hopping', location: 'Tel Aviv', creator: 'Raphael', picture_url: 'cover.jpg', id: 2 },
-    { title: 'Get some sushi', location: 'Tel Aviv', creator: 'Raphael',  picture_url: 'cover.jpg', id: 3 },
-    { title: 'Clubbing baby seals', location: 'Tel Aviv', creator: 'Alisa',  picture_url: 'cover.jpg', id: 4 },
-    { title: 'Playing video games', location: 'Tel Aviv', creator: 'Shy', picture_url: 'cover.jpg', id: 5 },
-    { title: 'Whiskey shots at Cofixxx and more', location: 'Tel Aviv', creator: 'Ary', picture_url: 'cover.jpg', id: 6 }
+    { title: 'Exercise at the beach', time: 'Today, 3PM', location: 'Tel Aviv', creator: 'Ofir', picture_url: 'img/beach.jpg', id: 1 },
+    { title: 'Get some sushi',  time: 'This Afternoon', location: 'Tel Aviv', creator: 'Raphael',  picture_url: 'img/sushi.jpg', id: 3 },
+    { title: 'Skiing', time: 'Tomorrow, 8AM', location: 'Tel Aviv', creator: 'Raphael', picture_url: 'img/ski.jpg', id: 2 },
+    { title: 'See Tame Impala live', time: 'Thursday, 9PM', location: 'Tel Aviv', creator: 'Alisa',  picture_url: 'img/livemusic.jpg', id: 4 },
+    { title: 'Playing video games', location: 'Tel Aviv', creator: 'Shy', picture_url: 'img/cover.jpg', id: 5 },
+    { title: 'Whiskey shots at Cofixxx and more', location: 'Tel Aviv', creator: 'Ary', picture_url: 'img/cover.jpg', id: 6 }
   ];
+
+  $scope.playlists.forEach(function (val) {
+    val.lat = 40.730885;
+    val.lng = -73.997383;
+
+  });
   //$scope.playlists = Event.getAll();
   //$scope.creator = User.getById($scope.playlists.user_id);
   Event.getAll().then(function(data) {
@@ -59,33 +65,44 @@ angular.module('starter.controllers', [])
 
 .controller('ParticipantsCtrl', function($scope, User, Event, $stateParams){
 
-    User.getByEvent($stateParams.eventId).then(function (data) {
-      $scope.users = data;
-      $scope.females = 0;
-      $scope.males = 0;
+    $scope.users = [
+                    { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
+                    { name: 'Eva Lidil', gender: 1, picture_url: 'img/participant2.jpg' },
+                    { name: 'Raphael Fettaya', gender: 0, picture_url: 'img/participant3.jpg' },
+                    { name: 'More Ladies', gender: 1, picture_url: 'img/participant4.jpg' }
+                    ];
 
-      _.each($scope.users, function(val){
-        if (val.gender) {
-          val.gender='Female';
-          $scope.females++;
-        }
-          else{val.gender='Male';
-          $scope.males++;
-        }
-      });
-      $scope.number = $scope.users.length;
-      if($scope.number > 0){
-        $scope.ratiof = $scope.females / $scope.number * 100;
-        $scope.ratiom = $scope.males / $scope.number * 100;
-      }
-      else{
-        $scope.ratiof = 0;
-        $scope.ratiom = 0;
-      }
+    //User.getByEvent($stateParams.eventId).then(function (data) {
+      //if (data) {
+        //$scope.users = data;
+        $scope.females = 0;
+        $scope.males = 0;
 
-      $scope.status = 'Join';
-      // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
-    });
+        $scope.users.forEach(function(val){
+          console.log(val.gender);
+          if (val.gender) {
+            val.gender='Female';
+            $scope.females++;
+          } else {
+            val.gender='Male';
+            $scope.males++;
+          }
+          console.log(val.gender);
+        });
+        $scope.number = $scope.users.length;
+        if($scope.number > 0){
+          $scope.ratiof = $scope.females / $scope.number * 100;
+          $scope.ratiom = $scope.males / $scope.number * 100;
+        }
+        else{
+          $scope.ratiof = 0;
+          $scope.ratiom = 0;
+        }
+
+        $scope.status = 'Join';
+        // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
+      //}
+    //});
 
     $scope.attend = function () {
       Event.update(id).then(function (data) {
@@ -97,22 +114,11 @@ angular.module('starter.controllers', [])
       });
     }
 
-    _.each($scope.users, function(val){
-      if (val.gender) {
-        val.gender='Female';
-        $scope.females++;
-      }
-        else{val.gender='Male';
-        $scope.males++;
-      }
-    });
-
-    $scope.number = $scope.users.length;
-    $scope.ratiof = $scope.females / $scope.number * 100;
-    $scope.ratiom = $scope.males / $scope.number * 100;
-    $scope.place = 'Restaurant Bellagio'
-    $scope.district = 'Florentin'
-    $scope.date = 'February 16, 2016'
+    if ($scope.number) {
+      $scope.place = 'Restaurant Bellagio'
+      $scope.district = 'Florentin'
+      $scope.date = 'February 16, 2016'
+    }
 })
 
 .controller('CreateCtrl', function($scope, User, $http, Event, $location){
