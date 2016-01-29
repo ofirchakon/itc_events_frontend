@@ -111,10 +111,9 @@ angular.module('starter.controllers', [])
     $scope.ratiom = $scope.males / $scope.number * 100;
     Event.get($stateParams.eventId).success(function(data){
       console.log(data);
+      $scope.place = data.title;
+      $scope.date = data.date;
     })
-    $scope.place = 'Title'
-    $scope.district = 'Florentin'
-    $scope.date = 'February 16, 2016'
 
   });
 })
