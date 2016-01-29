@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 'ion-google-place'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 'ion-google-place', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,6 +21,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     }
   });
 })
+
+// .config(function($cordovaFacebookProvider) {
+//   var appID = 123456789;
+//   var version = "v2.0"; // or leave blank and default is v2.0
+//   $cordovaFacebookProvider.browserInit(appID, version);
+// })
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -47,6 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       views: {
         'menuContent': {
           templateUrl: 'templates/event.html'
+
         }
       }
     })
@@ -75,6 +82,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       views: {
         'menuContent': {
           templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
+        }
+      }
+    })
+
+    .state('app.participants', {
+      url: '/participants',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/participants.html',
           controller: 'PlaylistsCtrl'
         }
       }
@@ -90,5 +107,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/login');
 });
+
+
