@@ -12,10 +12,13 @@
 	margin-top: 10px;
 }
 
+.hspace {
+	left: 5px;
+	width: 100%;
+}
+
 .container-centered {
 	width: 100%;
-	margin: 0px;
-	padding: 0px;
 	text-align: center;
 }
 
