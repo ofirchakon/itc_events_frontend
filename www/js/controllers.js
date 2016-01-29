@@ -169,8 +169,6 @@ angular.module('starter.controllers', [])
       $scope.event_.search_user = "";
       $scope.liste = '';
       var date = formatDate($scope.event_.date);
-      console.log(date);
-      console.log(formatStreetView($scope.event_.place.geometry.location.lng(),$scope.event_.place.geometry.location.lat()));
     }
 
     function formatDate(date) {
@@ -207,6 +205,9 @@ angular.module('starter.controllers', [])
 
 })
 .controller('LoginCtrl', function($scope, FB, User, $localStorage, $location) {
+  if(User.getMe() && User.getMe().id){
+    $location.path('/app/playlists')
+  }
   $scope.facebookConnect = function(){
     FB.login(function(user){
       User.create(user).success(function(data){
