@@ -20,9 +20,9 @@ angular.module('starter.factories', [])
 
 	obj.getByEvent = function (event_id) {
 		return $http({
-			method: 'POST',
-			url: 'http://meetc.herokuapp.com:80/event/get_user',
-			data: { 'event_id': event_id }
+			method: 'GET',
+			url: 'http://meetc.herokuapp.com:80/event/get_gens',
+			data: { 'id': event_id }
 		});
 	}
 

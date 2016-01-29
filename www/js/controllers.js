@@ -57,15 +57,9 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('ParticipantsCtrl', function($scope, User){
-    $scope.users = [
-    { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
-    { name: 'Eva Lidoni', gender: 1, picture_url: 'img/participant2.jpg' },
-    { name: 'Raphael Fettaya', gender: 0, picture_url: 'img/participant3.jpg' },
-    { name: 'More Ladies', gender: 1, picture_url: 'img/participant4.jpg' }
-    ];
+.controller('ParticipantsCtrl', function($scope, User, Event, $stateParams){
 
-    User.getByEvent().then(function (data) {
+    User.getByEvent($stateParams.eventId).then(function (data) {
       $scope.users = data;
       $scope.females = 0;
       $scope.males = 0;
@@ -121,7 +115,7 @@ angular.module('starter.controllers', [])
     $scope.date = 'February 16, 2016'
 })
 
-.controller('CreateCtrl', function($scope, User, $http){
+.controller('CreateCtrl', function($scope, User, $http, Event, $location){
     $scope.event_ = {
       invited : [],
       date : new Date()
@@ -189,19 +183,18 @@ angular.module('starter.controllers', [])
     }
     
     $scope.submitEvent = function () {
-      if ($scope.event_.title && $scope.event_.place && $scope.event_.invited && $scope.event_.date)
-      {
         var newEvent = {};
         newEvent.title = $scope.event_.title;
-        newEvent.lat = $scope.event_.place.geometry.location.lat()
-        newEvent.lng = $scope.event_.place.geometry.location.lng()
+        if($scope.event_.place){
+          newEvent.lat = $scope.event_.place.geometry.location.lat()
+          newEvent.lng = $scope.event_.place.geometry.location.lng()
+        }
         newEvent.participants = $scope.event_.invited; // Make sure creator ID is included
         newEvent.at_time = formatDate($scope.event_.date);
         // newEvent.picture_url = formatStreetView(newEvent.lat, newEvent.lng);
-        $http.post('http://ofirchakon.com/meetc/public/create_event.php', newEvent);
-      } else {
-        console.log('YOU MUST FILL IN ALL FIELDS!!!');
-      }
+        Event.create(newEvent).success(function(event_){
+          $location.path('/event/'+event_);
+        });
     }
 
 })
