@@ -54,8 +54,6 @@ angular.module('starter.controllers', [])
   //$scope.creator = User.getById($scope.playlists.user_id);
   User.getById(1).then(function(data) {
     $scope.playlists[0].creator = data.data[0].name;
-    console.log(data);
-    console.log($scope.playlists[0].creator);
   });
 })
 
@@ -161,9 +159,6 @@ angular.module('starter.controllers', [])
       $scope.users = [];
       $scope.event_.search_user = "";
       $scope.liste = '';
-      var date = formatDate($scope.event_.date);
-      console.log(date);
-      console.log(formatStreetView($scope.event_.place.geometry.location.lng(),$scope.event_.place.geometry.location.lat()));
     }
 
     function formatDate(date) {
@@ -187,15 +182,19 @@ angular.module('starter.controllers', [])
     }
     
     $scope.submitEvent = function () {
-      var newEvent = {};
-      newEvent.title = $scope.event_.title;
-      newEvent.lat = $scope.event_.place.geometry.location.lat()
-      newEvent.lng = $scope.event_.place.geometry.location.lng()
-      newEvent.participants = $scope.event_.invited; // Make sure creator ID is included
-      newEvent.at_time = formatDate($scope.event_.date);
-      // newEvent.picture_url = formatStreetView(newEvent.lat, newEvent.lng);
-
-      $http.post('http://ofirchakon.com/meetc/public/create_event.php', newEvent);
+      if ($scope.event_.title && $scope.event_.place && $scope.event_.invited && $scope.event_.date)
+      {
+        var newEvent = {};
+        newEvent.title = $scope.event_.title;
+        newEvent.lat = $scope.event_.place.geometry.location.lat()
+        newEvent.lng = $scope.event_.place.geometry.location.lng()
+        newEvent.participants = $scope.event_.invited; // Make sure creator ID is included
+        newEvent.at_time = formatDate($scope.event_.date);
+        // newEvent.picture_url = formatStreetView(newEvent.lat, newEvent.lng);
+        $http.post('http://ofirchakon.com/meetc/public/create_event.php', newEvent);
+      } else {
+        console.log('YOU MUST FILL IN ALL FIELDS!!!');
+      }
     }
 
 })
