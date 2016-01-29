@@ -51,6 +51,33 @@ angular.module('starter.controllers', [])
     { title: 'Whiskey shots at Cofixxx and more', location: 'Tel Aviv', creator: 'Ary', picture_url: 'cover.jpg', id: 6 }
   ];
 })
+
+.controller('ParticipantsCtrl', function($scope){
+    $scope.users = [
+    { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
+    { name: 'Eva Lidoni', gender: 1, picture_url: 'img/participant2.jpg' },
+    { name: 'Raphael Fettaya', gender: 0, picture_url: 'img/participant3.jpg' },
+    { name: 'More Ladies', gender: 1, picture_url: 'img/participant4.jpg' }
+    ];
+
+    $scope.females = 0;
+    $scope.males = 0;
+
+    $scope.users.forEach(function(val){
+      if (val.gender) {
+        val.gender='Female';
+        $scope.females++;
+      }
+        else{val.gender='Male';
+        $scope.males++;
+}
+    });
+    $scope.number = $scope.users.length;
+    $scope.ratiof = $scope.females / $scope.number * 100;
+    $scope.ratiom = $scope.males / $scope.number * 100;
+
+})
+
 .controller('CreateCtrl', function($scope, User){
     $scope.event_ = {
       invited : [],
@@ -99,3 +126,4 @@ angular.module('starter.controllers', [])
 })
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
+

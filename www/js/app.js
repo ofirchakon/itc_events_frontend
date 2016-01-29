@@ -46,7 +46,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       url: '/browse',
       views: {
         'menuContent': {
-          templateUrl: 'templates/event.html'
+          templateUrl: 'templates/event.html',
+          controller: 'ParticipantsCtrl'
 
         }
       }
@@ -86,7 +87,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       views: {
         'menuContent': {
           templateUrl: 'templates/participants.html',
-          controller: 'PlaylistsCtrl'
+          controller: 'ParticipantsCtrl'
         }
       }
     })

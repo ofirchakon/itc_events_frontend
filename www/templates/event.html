@@ -1,33 +1,34 @@
-<ion-modal-view> 
-  <div class="list_card">
-
-  <div class="item item-avatar">
-    <img src="img/avatar.jpg">
-    <h2>Restaurant Bellagio</h2>
-    	<h3>Florentin</h3>
-    <p>February 16, 2016</p>
-  </div>
-
-  <div class="ratio">
-  	    <button class="button button-positive button-female">
-  &#9794
-	</button>
-	  	    <button class="button button-positive">
-  &#9792
-	</button>
-  </div>
-  <div class="item item-body">
-    <p>
-     See Participants (25)
-    </p>
-    <p>
-      <a href="#" class="subdued">1 Like</a>
-      <a href="#" class="subdued">5 Comments</a>
-    </p>
-    <button class="button button-positive">
-  Attending
-	</button>
-  </div>
-
+<ion-modal-view view-title="Event"> 
+<div class="list_card">
+	<div class="item item-avatar">
+		<img src="img/avatar.jpg">
+	</div>
+	<div class="item item-type">
+		<h2>Restaurant Bellagio</h2>
+		<h3>Florentin</h3>
+		<p>February 16, 2016</p>
+	</div>
+	<div class="ratio">
+		<button class="button button-positive button-female">
+			&#9792
+			<p> {{ratiof}}%  </p>
+		</button>
+		<button class="button button-positive">
+			&#9794
+			<p> {{ratiom}}% </p>
+		</button>
+	</div>
+	<div class="item item-body">
+		<a href="#/app/participants" style="color: grey; text-decoration: none;">
+			See Participants ({{number}})
+		</a>
+		<p>
+			<a href="#" class="subdued">1 Like</a>
+			<a href="#" class="subdued">5 Comments</a>
+		</p>
+		<button class="button button-positive">
+			Attending
+		</button>
+	</div>
 </div>
 </ion-modal-view>

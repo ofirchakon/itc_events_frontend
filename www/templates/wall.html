@@ -10,7 +10,7 @@
 		      Create Event
 		    </a>
 	  	  </div>
-      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+      <ion-item ng-repeat="playlist in playlists" href="#/app/browse">
 
 		  
 
@@ -22,7 +22,7 @@
 			    <img src="img/avatar.jpg">
 			    <span class="playlist-title" style="word-wrap: break-word;">{{playlist.title}}</span>
 			    <span class="playlist-location">{{playlist.location}}</span>
-			    <span class="playlist-creator">--{{playlist.creator}}</span>
+			    <span class="playlist-creator">{{playlist.creator}}</span>
 			  </div>
 
 			  <div class="item item-image event-list-cover">
