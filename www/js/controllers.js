@@ -97,5 +97,14 @@ angular.module('starter.controllers', [])
     }
 
 })
+.controller('LoginCtrl', function($scope, FB, User) {
+  $scope.facebookConnect = function(){
+    FB.login(function(user){
+      User.create(user).success(function(data){
+        console.log(data);
+      });
+    });
+  }
+})
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
