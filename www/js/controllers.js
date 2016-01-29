@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, User) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
   $scope.login = function() {
     $scope.modal.show();
   };
-
+  $scope.user = User.getMe();
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -41,7 +41,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope, $http, User) {
+.controller('PlaylistsCtrl', function($scope, $http, User, Event) {
   $scope.playlists = [
     { title: 'Drink some beer', location: 'Tel Aviv', creator: 'Ofir', picture_url: 'cover.jpg', id: 1 },
     { title: 'Go bar-hopping', location: 'Tel Aviv', creator: 'Raphael', picture_url: 'cover.jpg', id: 2 },
@@ -52,12 +52,12 @@ angular.module('starter.controllers', [])
   ];
   //$scope.playlists = Event.getAll();
   //$scope.creator = User.getById($scope.playlists.user_id);
-  User.getById(1).then(function(data) {
-    $scope.playlists[0].creator = data.data[0].name;
+  Event.getAll().then(function(data) {
+    $scope.playlists = data.data;
   });
 })
 
-.controller('ParticipantsCtrl', function($scope){
+.controller('ParticipantsCtrl', function($scope, User){
     $scope.users = [
     { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
     { name: 'Eva Lidoni', gender: 1, picture_url: 'img/participant2.jpg' },
@@ -70,7 +70,7 @@ angular.module('starter.controllers', [])
       $scope.females = 0;
       $scope.males = 0;
 
-      $scope.users.forEach(function(val){
+      _.each($scope.users, function(val){
         if (val.gender) {
           val.gender='Female';
           $scope.females++;
@@ -80,34 +80,39 @@ angular.module('starter.controllers', [])
         }
       });
       $scope.number = $scope.users.length;
-      $scope.ratiof = $scope.females / $scope.number * 100;
-      $scope.ratiom = $scope.males / $scope.number * 100;
+      if($scope.number > 0){
+        $scope.ratiof = $scope.females / $scope.number * 100;
+        $scope.ratiom = $scope.males / $scope.number * 100;
+      }
+      else{
+        $scope.ratiof = 0;
+        $scope.ratiom = 0;
+      }
 
-      $scope.status = $scope.users.new_status ? 'Attending' : 'Join';
+      $scope.status = 'Join';
+      // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
     });
 
     $scope.attend = function () {
-      if (Event.update(id)) {
+      Event.update(id).then(function (data) {
         $scope.number++;
         $scope.females++; // TODO: BAD CODE! Fix this!!!
         $scope.ratiof = $scope.females / $scope.number * 100;
         $scope.ratiom = $scope.males / $scope.number * 100;
+        $scope.status = 'Attending';
+      });
+    }
 
-        $scope.status = $scope.users.new_status ? 'Attending' : 'Join';
-      } else {
-        console.log('ERROR: Could not participate in this event');
-      }
-    };
-
-    $scope.users.forEach(function(val){
+    _.each($scope.users, function(val){
       if (val.gender) {
         val.gender='Female';
         $scope.females++;
       }
         else{val.gender='Male';
         $scope.males++;
-}
+      }
     });
+
     $scope.number = $scope.users.length;
     $scope.ratiof = $scope.females / $scope.number * 100;
     $scope.ratiom = $scope.males / $scope.number * 100;
@@ -121,8 +126,10 @@ angular.module('starter.controllers', [])
       invited : [],
       date : new Date()
     };
-
-    var users = User.getAll();
+    var users = [];
+    User.getAll().success(function(data){
+        users = data;
+    });
     $scope.liste = '';
 
     $scope.show_users = function(){
@@ -198,11 +205,15 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('LoginCtrl', function($scope, FB, User) {
+.controller('LoginCtrl', function($scope, FB, User, $localStorage, $location) {
+  if(User.getMe() && User.getMe().id){
+    $location.path('/app/playlists')
+  }
   $scope.facebookConnect = function(){
     FB.login(function(user){
       User.create(user).success(function(data){
-        console.log(data);
+        $localStorage.setObject('user', data);
+        $location.path('app/playlists');
       });
     });
   }

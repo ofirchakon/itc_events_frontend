@@ -1,12 +1,12 @@
 angular.module('starter.factories', [])
 
-.factory('User', ['$http', function($http){
+.factory('User', ['$http', '$localStorage', function($http, $localStorage){
 	var obj = {};
 
 	obj.getAll = function(){
 		return $http({
 			method: 'GET',
-			url: 'http://meetc.herokuapp.com:80/get_users',
+			url: 'http://meetc.herokuapp.com:80/user/getAll',
 		});
 	}
 
@@ -21,9 +21,13 @@ angular.module('starter.factories', [])
 	obj.getByEvent = function (event_id) {
 		return $http({
 			method: 'POST',
-			url: 'http://meetc.herokuapp.com:80/event_users',
+			url: 'http://meetc.herokuapp.com:80/event/get_user',
 			data: { 'event_id': event_id }
 		});
+	}
+
+	obj.getMe = function(){
+		return $localStorage.getObject('user');
 	}
 
 	obj.create = function(user_data){
@@ -35,20 +39,18 @@ angular.module('starter.factories', [])
 					'email': user_data.email,
 					'picture_url': user_data.picture_url
 		};
-
-		return $http.post('http://meetc.herokuapp.com:80/create_user', user);
+		return $http.post('http://meetc.herokuapp.com:80/user/create', user);
 	}
 	return obj;
 }])
 
-.factory('Event', ['$http', function ($http) {
+.factory('Event', ['$http', 'User', function ($http, User) {
 
 	var obj = {};
 
 	obj.create = function(event_data) {
 		var _event = {
-			'event_id': event_data.id,
-			'user_id': event_data.user_id,
+			'user_id': User.getMe().id,
 			'title': event_data.title,
 			'at_time': event_data.at_time,
 			'lat': event_data.lat,
@@ -57,20 +59,17 @@ angular.module('starter.factories', [])
 			'participants': event_data.participants
 		};
 
-		return $http.post('http://meetc.herokuapp.com:80/create_event', _event);
+		return $http.post('http://meetc.herokuapp.com:80/event/create', _event);
 	};
 
 	obj.getAll = function () {
-		return $http({
-			method: 'GET',
-			url: 'http://meetc.herokuapp.com:80/get_events'
-		});
+		return $http.post('http://meetc.herokuapp.com:80/user/get_event', {user_id: User.getMe().id});
 	};
 
 	obj.update = function (update_obj) {
 		return $http({
 			method: 'POST',
-			url: 'http://meetc.herokuapp.com:80/update_event',
+			url: 'http://meetc.herokuapp.com:80/event/update',
 			data: {
 				'event_id': update_obj.event_id,
 				'user_id': update_obj.user_id,
@@ -131,4 +130,45 @@ angular.module('starter.factories', [])
    }
 
 	return obj;
+}])
+
+.factory('$localStorage', ['$window', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = value;
+    },
+    get: function(key, defaultValue) {
+      return $window.localStorage[key] || defaultValue;
+    },
+    setObject: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    getObject: function(key) {
+        return JSON.parse($window.localStorage[key] || '{}');
+    },
+    clearAll:function(){
+      $window.localStorage.clear();
+    },
+    clear:function(key){
+       $window.localStorage.removeItem[key];
+    },
+    setAttribute: function(key, property, attribute){
+      var object = JSON.parse($window.localStorage[key] || '{}');
+      object[property] = attribute;
+      $window.localStorage[key] = object;
+    },
+    addElement: function(key, element){
+      var object = JSON.parse($window.localStorage[key] || '[]');
+      object.push(element);
+      $window.localStorage[key] = JSON.stringify(object);
+    },
+    removeElement: function(key, element){
+      var object = JSON.parse($window.localStorage[key] || '[]');
+      object.splice(key,1);
+      $window.localStorage[key] = JSON.stringify(object);
+    },
+    getArray: function(key) {
+      return JSON.parse($window.localStorage[key] || '[]');
+    }
+  }
 }])

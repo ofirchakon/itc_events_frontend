@@ -38,6 +38,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     controller: 'AppCtrl'
   })
 
+    .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
+    })
+
   .state('app.search', {
     url: '/search',
     views: {
@@ -78,16 +84,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     //   }
     // })
 
-    .state('app.login', {
-      url: '/login',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/login.html',
-          controller: 'LoginCtrl'
-        }
-      }
-    })
-
     .state('app.participants', {
       url: '/participants',
       views: {
@@ -108,7 +104,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/login');
+  $urlRouterProvider.otherwise('/login');
 });
 
 
