@@ -20,9 +20,8 @@ angular.module('starter.factories', [])
 
 	obj.getByEvent = function (event_id) {
 		return $http({
-			method: 'GET',
-			url: 'http://meetc.herokuapp.com:80/event/get_gens',
-			data: { 'id': event_id }
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/event/get_gens/'+event_id
 		});
 	}
 
@@ -66,6 +65,9 @@ angular.module('starter.factories', [])
 		return $http.post('http://meetc.herokuapp.com:80/user/get_event', {user_id: User.getMe().id});
 	};
 
+	obj.get = function(event_id) {
+		return $http.post('http://meetc.herokuapp.com:80/event/get', {event_id: event_id});
+	}
 	obj.update = function (update_obj) {
 		return $http({
 			method: 'POST',

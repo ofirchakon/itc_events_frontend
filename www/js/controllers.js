@@ -65,6 +65,7 @@ angular.module('starter.controllers', [])
 
 .controller('ParticipantsCtrl', function($scope, User, Event, $stateParams){
 
+<<<<<<< HEAD
     $scope.users = [
                     { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
                     { name: 'Eva Lidil', gender: 1, picture_url: 'img/participant2.jpg' },
@@ -93,6 +94,16 @@ angular.module('starter.controllers', [])
         if($scope.number > 0){
           $scope.ratiof = $scope.females / $scope.number * 100;
           $scope.ratiom = $scope.males / $scope.number * 100;
+
+    User.getByEvent($stateParams.eventId).then(function (data) {
+      $scope.users = data.data;
+      $scope.females = 0;
+      $scope.males = 0;
+
+      _.each($scope.users, function(val){
+        if (val.gender) {
+          val.gender='Female';
+          $scope.females++;
         }
         else{
           $scope.ratiof = 0;
@@ -103,6 +114,8 @@ angular.module('starter.controllers', [])
         // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
       //}
     //});
+      $scope.status = 'Join';
+      // TODO: $scope.status = THISUSER.new_status ? 'Attending' : 'Join';
 
     $scope.attend = function () {
       Event.update(id).then(function (data) {
@@ -119,6 +132,26 @@ angular.module('starter.controllers', [])
       $scope.district = 'Florentin'
       $scope.date = 'February 16, 2016'
     }
+    _.each($scope.users, function(val){
+      if (val.gender) {
+        val.gender='Female';
+        $scope.females++;
+      }
+        else{val.gender='Male';
+        $scope.males++;
+      }
+    });
+
+    $scope.number = $scope.users.length;
+    $scope.ratiof = $scope.females / $scope.number * 100;
+    $scope.ratiom = $scope.males / $scope.number * 100;
+    Event.get($stateParams.eventId).success(function(data){
+      console.log(data);
+      $scope.place = data.title;
+      $scope.date = data.date;
+    })
+
+  });
 })
 
 .controller('CreateCtrl', function($scope, User, $http, Event, $location){
