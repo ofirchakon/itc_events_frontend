@@ -53,7 +53,7 @@ angular.module('starter.controllers', [])
   //$scope.playlists = Event.getAll();
   //$scope.creator = User.getById($scope.playlists.user_id);
   Event.getAll().then(function(data) {
-    $scope.playlists = data.data;
+    //$scope.playlists = data.data;
   });
 })
 
