@@ -1,9 +1,33 @@
-<ion-view view-title="Playlists">
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        {{playlist.title}}
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-modal-view> 
+
+	<link href="css/style.css" rel="stylesheet">
+	<ion-view view-title="Events">
+	  <ion-content>
+	    <ion-list>
+	      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
+
+		      <div class="list card">
+		      	<div class="event-list-item silver">
+
+				  <div class="item item-avatar silver">
+				    <img src="img/avatar.jpg">
+				    <span class="playlist-title" style="word-wrap: break-word;">{{playlist.title}}</span>
+				    <span class="playlist-location">{{playlist.location}}</span>
+				    <span class="playlist-creator">-{{playlist.creator}}</span>
+				  </div>
+
+				  <div class="item item-image event-list-cover">
+				    <img class="event-list-cover" src="img/{{playlist.picture_url}}">
+				  </div>
+
+				  <button class="button button-block button-positive meetc-blue" style="background-color: #4A90E2">
+	  				Join
+				  </button>
+
+				</div>
+			  </div>
+
+	      </ion-item>
+	    </ion-list>
+	  </ion-content>
 </ion-view>

@@ -60,6 +60,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       }
     })
 
+    // .state('app.playlists', {
+    //   url: '/playlists',
+    //   views: {
+    //     'menuContent': {
+    //       templateUrl: 'templates/wall.html',
+    //       controller: 'PlaylistsCtrl'
+    //     }
+    //   }
+    // })
+
+    .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'PlaylistsCtrl'
+        }
+      }
+    })
+
   .state('app.single', {
     url: '/playlists/:playlistId',
     views: {
