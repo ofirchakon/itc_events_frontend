@@ -41,29 +41,23 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope, $http) {
-  var xxx = 'Whiskey shots at Cofixxx and more';
+.controller('PlaylistsCtrl', function($scope, $http, User) {
   $scope.playlists = [
     { title: 'Drink some beer', location: 'Tel Aviv', creator: 'Ofir', picture_url: 'cover.jpg', id: 1 },
     { title: 'Go bar-hopping', location: 'Tel Aviv', creator: 'Raphael', picture_url: 'cover.jpg', id: 2 },
     { title: 'Get some sushi', location: 'Tel Aviv', creator: 'Raphael',  picture_url: 'cover.jpg', id: 3 },
     { title: 'Clubbing baby seals', location: 'Tel Aviv', creator: 'Alisa',  picture_url: 'cover.jpg', id: 4 },
     { title: 'Playing video games', location: 'Tel Aviv', creator: 'Shy', picture_url: 'cover.jpg', id: 5 },
-    { title: xxx, location: 'Tel Aviv', creator: 'Ary', picture_url: 'cover.jpg', id: 6 }
+    { title: 'Whiskey shots at Cofixxx and more', location: 'Tel Aviv', creator: 'Ary', picture_url: 'cover.jpg', id: 6 }
   ];
-  $http.post('http://ofirchakon.com/meetc/public/get_events.php',
-    null)
-    .success(function (data) {
-      console.log($scope.playlists);
-      $scope.playlists = data;
-      console.log($scope.playlists);
-    }).error(function (err) {
-      console.log('ERROR: problem with post "get_events.php": ' + err);
-    }
-  );
+  //$scope.playlists = Event.getAll();
+  //$scope.creator = User.getById($scope.playlists.user_id);
+  User.getById(1).then(function(data) {
+    $scope.playlists[0].creator = data.data[0].name;
+  });
 })
 
-.controller('ParticipantsCtrl', function($scope){
+.controller('ParticipantsCtrl', function($scope, User){
     $scope.users = [
     { name: 'Barbara Vitoria', gender: 1, picture_url: 'img/participant.jpg' },
     { name: 'Eva Lidoni', gender: 1, picture_url: 'img/participant2.jpg' },
@@ -71,18 +65,56 @@ angular.module('starter.controllers', [])
     { name: 'More Ladies', gender: 1, picture_url: 'img/participant4.jpg' }
     ];
 
-    $scope.females = 0;
-    $scope.males = 0;
+    User.getByEvent().then(function (data) {
+      $scope.users = data;
+      $scope.females = 0;
+      $scope.males = 0;
 
-    $scope.users.forEach(function(val){
+      _.each($scope.users, function(val){
+        if (val.gender) {
+          val.gender='Female';
+          $scope.females++;
+        }
+          else{val.gender='Male';
+          $scope.males++;
+        }
+      });
+      $scope.number = $scope.users.length;
+      if($scope.number > 0){
+        $scope.ratiof = $scope.females / $scope.number * 100;
+        $scope.ratiom = $scope.males / $scope.number * 100;
+      }
+      else{
+        $scope.ratiof = 0;
+        $scope.ratiom = 0;
+      }
+
+      $scope.status = $scope.users.new_status ? 'Attending' : 'Join';
+    });
+
+    $scope.attend = function () {
+      if (Event.update(id)) {
+        $scope.number++;
+        $scope.females++; // TODO: BAD CODE! Fix this!!!
+        $scope.ratiof = $scope.females / $scope.number * 100;
+        $scope.ratiom = $scope.males / $scope.number * 100;
+
+        $scope.status = $scope.users.new_status ? 'Attending' : 'Join';
+      } else {
+        console.log('ERROR: Could not participate in this event');
+      }
+    };
+
+    _.each($scope.users, function(val){
       if (val.gender) {
         val.gender='Female';
         $scope.females++;
       }
         else{val.gender='Male';
         $scope.males++;
-}
+      }
     });
+
     $scope.number = $scope.users.length;
     $scope.ratiof = $scope.females / $scope.number * 100;
     $scope.ratiom = $scope.males / $scope.number * 100;
@@ -96,8 +128,10 @@ angular.module('starter.controllers', [])
       invited : [],
       date : new Date()
     };
-
-    var users = User.getAll();
+    var users = [];
+    User.getAll().success(function(data){
+        users = data;
+    });
     $scope.liste = '';
 
     $scope.show_users = function(){

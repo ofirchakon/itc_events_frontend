@@ -4,14 +4,26 @@ angular.module('starter.factories', [])
 	var obj = {};
 
 	obj.getAll = function(){
-		return [{
-			name: 'Raphael Fettaya',
-			id: 1
-		}, 
-		{
-			name: 'Harry Potter',
-			id: 2
-		}, ]
+		return $http({
+			method: 'GET',
+			url: 'http://meetc.herokuapp.com:80/user/getAll',
+		});
+	}
+
+	obj.getById = function (user_id) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/user/get',
+			data: { 'user_id': user_id }
+		});
+	}
+
+	obj.getByEvent = function (event_id) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/event/get_user',
+			data: { 'event_id': event_id }
+		});
 	}
 
 	obj.getMe = function(){
@@ -30,6 +42,44 @@ angular.module('starter.factories', [])
 		return $http.post('http://meetc.herokuapp.com:80/user/create', user);
 	}
 	return obj;
+}])
+
+.factory('Event', ['$http', 'User', function ($http, User) {
+
+	var obj = {};
+
+	obj.create = function(event_data) {
+		var _event = {
+			'user_id': User.getMe().id,
+			'title': event_data.title,
+			'at_time': event_data.at_time,
+			'lat': event_data.lat,
+			'lng': event_data.lng,
+			'picture_url': event_data.picture_url,
+			'participants': event_data.participants
+		};
+
+		return $http.post('http://meetc.herokuapp.com:80/event/create', _event);
+	};
+
+	obj.getAll = function () {
+		return $http.post('http://meetc.herokuapp.com:80/user/get_event', {user_id: User.getMe().id});
+	};
+
+	obj.update = function (update_obj) {
+		return $http({
+			method: 'POST',
+			url: 'http://meetc.herokuapp.com:80/event/update',
+			data: {
+				'event_id': update_obj.event_id,
+				'user_id': update_obj.user_id,
+				'new_status': update_obj.new_status
+			}
+		});
+	}
+
+	return obj;
+
 }])
 
 .factory('FB', ['$http', '$q', function($http, $q){
