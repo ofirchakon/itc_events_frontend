@@ -86,7 +86,9 @@ angular.module('starter.controllers', [])
     $scope.number = $scope.users.length;
     $scope.ratiof = $scope.females / $scope.number * 100;
     $scope.ratiom = $scope.males / $scope.number * 100;
-
+    $scope.place = 'Restaurant Bellagio'
+    $scope.district = 'Florentin'
+    $scope.date = 'February 16, 2016'
 })
 
 .controller('CreateCtrl', function($scope, User, $http){
@@ -181,4 +183,5 @@ angular.module('starter.controllers', [])
   }
 })
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})
+
