@@ -67,7 +67,6 @@ angular.module('starter.controllers', [])
     { name: 'More Ladies', gender: 1, picture_url: 'img/participant4.jpg' }
     ];
 
-
     User.getByEvent().then(function (data) {
       $scope.users = data;
       $scope.females = 0;
@@ -87,7 +86,7 @@ angular.module('starter.controllers', [])
       $scope.ratiom = $scope.males / $scope.number * 100;
 
       $scope.status = $scope.users.new_status ? 'Attending' : 'Join';
-    }
+    });
 
     $scope.attend = function () {
       if (Event.update(id)) {
@@ -101,6 +100,22 @@ angular.module('starter.controllers', [])
         console.log('ERROR: Could not participate in this event');
       }
     };
+
+    $scope.users.forEach(function(val){
+      if (val.gender) {
+        val.gender='Female';
+        $scope.females++;
+      }
+        else{val.gender='Male';
+        $scope.males++;
+}
+    });
+    $scope.number = $scope.users.length;
+    $scope.ratiof = $scope.females / $scope.number * 100;
+    $scope.ratiom = $scope.males / $scope.number * 100;
+    $scope.place = 'Restaurant Bellagio'
+    $scope.district = 'Florentin'
+    $scope.date = 'February 16, 2016'
 })
 
 .controller('CreateCtrl', function($scope, User, $http){
@@ -194,4 +209,5 @@ angular.module('starter.controllers', [])
   }
 })
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})
+
